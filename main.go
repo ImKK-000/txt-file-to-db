@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
 	"log"
@@ -18,16 +19,11 @@ func main() {
 		log.Fatal(errorOpenFile)
 	}
 
-	fileInfo, errorGetFileInfo := file.Stat()
-	if errorGetFileInfo != nil {
-		log.Fatal(errorGetFileInfo)
+	fileReader := bufio.NewReader(file)
+	var line string
+	var err error
+	for err == nil {
+		fmt.Print(line)
+		line, err = fileReader.ReadString('\n')
 	}
-
-	buffer := make([]byte, fileInfo.Size())
-	_, errorReadData := file.Read(buffer)
-	if errorReadData != nil {
-		log.Fatal(errorReadData)
-	}
-
-	fmt.Print(string(buffer))
 }
