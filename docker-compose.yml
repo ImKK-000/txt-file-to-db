@@ -6,6 +6,7 @@ services:
     image: mysql:5.6
     volumes:
     - ./.data:/var/lib/mysql
+    - ./script.sql:/sql/script.sql
     ports:
     - "9999:3306"
     environment:
