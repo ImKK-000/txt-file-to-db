@@ -1,4 +1,4 @@
-# try to read text file to mysql database
+# Try to insert mysql database with data from text file
 `mysql require host port 9999`
 
 `mysql data volume mapping to .data in current directory`
@@ -11,5 +11,15 @@
 ```sh
 $   docker-compose up -d
 $   docker exec -it txt-file-db bash
-$   mysql -u root -p < /sql/script.sql
+[inside container]$   mysql -u root -p < /sql/script.sql
+```
+
+## Download mysql driver
+```sh
+$   GOPATH=$PWD go get -u github.com/go-sql-driver/mysql
+```
+
+## How to run
+```sh
+$   GOPATH=$PWD go run main.go
 ```
