@@ -20,8 +20,7 @@ func main() {
 	}
 
 	fileReader := bufio.NewReader(file)
-	var line string
-	var err error
+	var line, err = "", error(nil)
 	for err == nil {
 		fmt.Print(line)
 		line, err = fileReader.ReadString('\n')
