@@ -3,6 +3,10 @@
 
 `mysql data volume mapping to .data in current directory`
 
+**`mysql allow empty root password`**
+
+`you can set mysql root password via $MYSQL_ROOT_PASSWORD environment variable`
+
 ## Installation mysql with sql script for create database and table
 ```sh
 $   docker-compose up -d
