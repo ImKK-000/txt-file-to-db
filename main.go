@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bufio"
+	"bytes"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
-	"os"
 )
 
 func main() {
@@ -13,16 +13,15 @@ func main() {
 	flag.StringVar(&filename, "filename", "input_file", "set filename")
 	flag.Parse()
 
-	file, errorOpenFile := os.OpenFile(filename, os.O_RDONLY, os.ModePerm)
-	defer file.Close()
-	if errorOpenFile != nil {
-		log.Fatal(errorOpenFile)
+	rawBytes, errorReadFile := ioutil.ReadFile(filename)
+	if errorReadFile != nil {
+		log.Fatal(errorReadFile)
 	}
 
-	fileReader := bufio.NewReader(file)
-	var line, err = "", error(nil)
+	buffer := bytes.NewBuffer(rawBytes)
+	line, err := "", error(nil)
 	for err == nil {
 		fmt.Print(line)
-		line, err = fileReader.ReadString('\n')
+		line, err = buffer.ReadString('\n')
 	}
 }
