@@ -2,10 +2,13 @@ package main
 
 import (
 	"bytes"
+	"database/sql"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -18,10 +21,15 @@ func main() {
 		log.Fatal(errorReadFile)
 	}
 
-	buffer := bytes.NewBuffer(rawBytes)
-	line, err := "", error(nil)
-	for err == nil {
-		fmt.Print(line)
-		line, err = buffer.ReadString('\n')
+	buffer := bytes.Split(rawBytes, []byte{13, 10})
+	dbConnection, _ := sql.Open("mysql", "root:@tcp(:9999)/txt_db")
+	defer dbConnection.Close()
+	for index, line := range buffer {
+		if len(line) > 0 {
+			statementInsert, _ := dbConnection.Prepare("INSERT INTO txt_table(data) VALUES(?)")
+			statementInsert.Exec(string(line))
+			defer statementInsert.Close()
+			fmt.Printf("%d: %s\n", index, string(line))
+		}
 	}
 }
