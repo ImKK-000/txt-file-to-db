@@ -24,6 +24,7 @@ func main() {
 	buffer := bytes.Split(rawBytes, []byte{13, 10})
 	dbConnection, _ := sql.Open("mysql", "root:@tcp(:9999)/txt_db")
 	defer dbConnection.Close()
+	dbConnection.Exec("TRUNCATE TABLE txt_table")
 	for index, line := range buffer {
 		if len(line) > 0 {
 			statementInsert, _ := dbConnection.Prepare("INSERT INTO txt_table(data) VALUES(?)")
